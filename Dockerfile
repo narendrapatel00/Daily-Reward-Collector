@@ -26,41 +26,20 @@ ENV TARGET_URL=http://localhost:10000
 
 WORKDIR /app
 
-# Install system dependencies required by Google Chrome
+# Install download helpers and system tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
     wget \
-    gnupg \
     ca-certificates \
     curl \
+    gnupg \
     unzip \
-    libglib2.0-0 \
-    libnss3 \
-    libfontconfig1 \
-    libxrender1 \
-    libxtst6 \
-    libxi6 \
-    libdbus-1-3 \
-    libxrandr2 \
-    libasound2 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxext6 \
-    libxfixes3 \
-    libgbm1 \
-    libpango-1.0-0 \
-    libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Download and install Google Chrome Stable
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+# Download and install Google Chrome stable along with its dependencies automatically
+RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
     && apt-get update \
-    && apt-get install -y google-chrome-stable --no-install-recommends \
+    && apt-get install -y ./google-chrome-stable_current_amd64.deb --no-install-recommends \
+    && rm ./google-chrome-stable_current_amd64.deb \
     && rm -rf /var/lib/apt/lists/*
 
 # Install python backend requirements

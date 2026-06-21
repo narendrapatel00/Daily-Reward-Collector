@@ -4,8 +4,6 @@ import random
 from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -85,9 +83,8 @@ def run_selenium(account, target_url):
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_argument("--disable-gpu")
         
-        # Initialize Chrome Driver using webdriver-manager
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(service=service, options=chrome_options)
+        # Initialize Chrome Driver using Selenium Manager (built-in for Selenium 4)
+        driver = webdriver.Chrome(options=chrome_options)
         
         # Set viewport size
         driver.set_window_size(1280, 800)
