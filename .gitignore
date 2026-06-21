@@ -1,0 +1,24 @@
+# Backend
+backend/venv/
+backend/.env
+backend/__pycache__/
+backend/**/*.pyc
+instance/
+backend/instance/
+*.db
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# System/IDE
+.DS_Store
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
