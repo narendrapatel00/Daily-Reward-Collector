@@ -11,7 +11,7 @@ from models import Account, Log
 from scheduler import start_scheduler, trigger_collection_now, trigger_all_collections_now
 
 # Initialize Flask
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../frontend/dist', static_url_path='/')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'daily-reward-collector-secret-key-123')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///daily_rewards.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -369,6 +369,18 @@ def mock_claim():
 def mock_logout():
     session.pop('username', None)
     return redirect(url_for('mock_login'))
+
+
+# ----------------- SPA Catch-All Route -----------------
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    if path.startswith("api/") or path.startswith("mock-site/"):
+        return jsonify({"error": "Not Found"}), 404
+    # Serve static files if they exist under static_folder
+    if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
+        return app.send_static_file(path)
+    return app.send_static_file('index.html')
 
 
 # ----------------- Start Server -----------------
